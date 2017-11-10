@@ -16,6 +16,7 @@ const config = {
     path: path.resolve(__dirname, 'build')
   },
 
+  // Tells webpack to not bundle any libraries into output server-side bundle if that library exists inside the node modules folder, which speeds webpack by reducing bundle size
   externals: [webpackNodeExternals()]
 };
 
