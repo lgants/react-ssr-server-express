@@ -1,17 +1,17 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import Home from './components/Home';
-import UsersList, { loadData } from './components/UsersList';
+import HomeRoot from './roots/HomeRoomt';
+import UsersListRoot, { loadData } from './roots/UsersListRoot';
 
+// HomeRoot is an object with key of component
 export default [
   {
+    ...HomeRoot
     path: '/',
-    component: Home,
     exact: true
   },
   {
-    loadData,
-    path: '/users',
-    component: UsersList
+    ...UsersListRoot,
+    path: '/users'
   }
 ]
