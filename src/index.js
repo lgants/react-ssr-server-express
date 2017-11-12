@@ -10,14 +10,14 @@ const app = express();
 
 app.use('/api', proxy('http://react-ssr-api.herokuapp.com', {
   porxyReqOptDecorator(opts) {
-    opts.header['x-forwarded-host'] = 'localhost:3000';
+    opts.headers['x-forwarded-host'] = 'localhost:3000';
     return opts;
   }
 }));
 app.use(express.static('public'))
 app.get('*', (req, res) => {
   // Create store outside renderer
-  const store = createStore();
+  const store = createStore(req);
 
   // Array of promises representing pending network requests
   const promises = matchRoutes(Routes, req.path).map(({ route }) => {
