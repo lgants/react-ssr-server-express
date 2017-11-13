@@ -22,8 +22,17 @@ app.get('*', (req, res) => {
   const store = createStore(req);
 
   // Array of promises representing pending network requests
-  const promises = matchRoutes(Routes, req.path).map(({ route }) => {
+  const promises = matchRoutes(Routes, req.path)
+  .map(({ route }) => {
     return route.loadData ? route.loadData : null;
+  })
+  .map(promise => {
+    if (promise) {
+      return new Promise((resolve, reject) => {
+        // Always resolves the inner wrapped promise
+        promise.then(resolve).catch(resolve);
+      });
+    }
   });
 
   Promise.all(promises).then(() => {

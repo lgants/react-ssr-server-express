@@ -2,6 +2,7 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import App from './App';
 import HomeRoot from './roots/HomeRoot';
+import AdminsListRoot from './pages/AdminsListRoot';
 import NotFoundRoot from './roots/NotFoundRoot';
 import UsersListRoot, { loadData } from './roots/UsersListRoot';
 
@@ -14,6 +15,10 @@ export default [
         ...HomeRoot,
         path: '/',
         exact: true
+      },
+      {
+        ...AdminsListRoot,
+        path: '/admins'
       },
       {
         ...UsersListRoot,

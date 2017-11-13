@@ -172,6 +172,41 @@ var fetchCurrentUser = exports.fetchCurrentUser = function fetchCurrentUser() {
   }();
 };
 
+var FETCH_ADMINS = exports.FETCH_ADMINS = 'fetch_admins';
+var fetchAdmins = exports.fetchAdmins = function fetchAdmins() {
+  return function () {
+    var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(dispatch, getState, api) {
+      var res;
+      return regeneratorRuntime.wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              _context3.next = 2;
+              return api.get('/admins');
+
+            case 2:
+              res = _context3.sent;
+
+
+              dispatch({
+                type: FETCH_ADMINS,
+                payload: res
+              });
+
+            case 4:
+            case 'end':
+              return _context3.stop();
+          }
+        }
+      }, _callee3, undefined);
+    }));
+
+    return function (_x7, _x8, _x9) {
+      return _ref3.apply(this, arguments);
+    };
+  }();
+};
+
 /***/ }),
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -199,6 +234,10 @@ var _HomeRoot = __webpack_require__(13);
 
 var _HomeRoot2 = _interopRequireDefault(_HomeRoot);
 
+var _AdminsListRoot = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./pages/AdminsListRoot\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+
+var _AdminsListRoot2 = _interopRequireDefault(_AdminsListRoot);
+
 var _NotFoundRoot = __webpack_require__(24);
 
 var _NotFoundRoot2 = _interopRequireDefault(_NotFoundRoot);
@@ -214,6 +253,8 @@ exports.default = [_extends({}, _App2.default, {
   routes: [_extends({}, _HomeRoot2.default, {
     path: '/',
     exact: true
+  }), _extends({}, _AdminsListRoot2.default, {
+    path: '/admins'
   }), _extends({}, _UsersListRoot2.default, {
     path: '/users'
   }), _extends({}, _NotFoundRoot2.default)]
@@ -278,6 +319,13 @@ app.get('*', function (req, res) {
     var route = _ref.route;
 
     return route.loadData ? route.loadData : null;
+  }).map(function (promise) {
+    if (promise) {
+      return new Promise(function (resolve, reject) {
+        // Always resolves the inner wrapped promise
+        promise.then(resolve).catch(resolve);
+      });
+    }
   });
 
   Promise.all(promises).then(function () {
@@ -707,11 +755,16 @@ var _authReducer = __webpack_require__(23);
 
 var _authReducer2 = _interopRequireDefault(_authReducer);
 
+var _adminsReducer = __webpack_require__(25);
+
+var _adminsReducer2 = _interopRequireDefault(_adminsReducer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = (0, _redux.combineReducers)({
   users: _usersReducer2.default,
-  auth: _authReducer2.default
+  auth: _authReducer2.default,
+  admins: _adminsReducer2.default
 });
 
 /***/ }),
@@ -797,6 +850,31 @@ var NotFoundRoot = function NotFoundRoot(_ref) {
 
 exports.default = {
   component: NotFoundRoot
+};
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _actions = __webpack_require__(4);
+
+exports.default = function () {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+  var action = arguments[1];
+
+  switch (action.type) {
+    case _actions.FETCH_ADMINS:
+      return action.payload.data;
+    default:
+      return state;
+  }
 };
 
 /***/ })
