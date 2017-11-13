@@ -8,8 +8,10 @@ import createStore from './helpers/createStore';
 
 const app = express();
 
+// Use proxy to setup cookies with renderer server rather than the API because cookies are tied to a specific domain (i.e. tricks browser since it doesn't see what happens past the proxy)
 app.use('/api', proxy('http://react-ssr-api.herokuapp.com', {
-  porxyReqOptDecorator(opts) {
+  // Provide redirect destination for OAuth
+  proxyReqOptDecorator(opts) {
     opts.headers['x-forwarded-host'] = 'localhost:3000';
     return opts;
   }

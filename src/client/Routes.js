@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import App from './App';
-import HomeRoot from './roots/HomeRoomt';
+import HomeRoot from './roots/HomeRoot';
 import UsersListRoot, { loadData } from './roots/UsersListRoot';
 
 // HomeRoot is an object with key of component
@@ -10,7 +10,7 @@ export default [
     ...App,
     routes: [
       {
-        ...HomeRoot
+        ...HomeRoot,
         path: '/',
         exact: true
       },

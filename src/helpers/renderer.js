@@ -19,11 +19,13 @@ export default (req, store) => {
   // Need to manually include script tag to ensure the browser goes back to the server to request the bundle
   return `
     <html>
-      <head></head>
+      <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+      </head>
       <body>
         <div id="root">${content}</div>
         <script>
-          window.INITIAL_STATE = ${serialize(state.getState())}
+          window.INITIAL_STATE = ${serialize(store.getState())}
         </script>
         <script src="bundle.js"></script>
       </body>
