@@ -2,7 +2,7 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import App from './App';
 import HomeRoot from './roots/HomeRoot';
-import AdminsListRoot from './pages/AdminsListRoot';
+import AdminsListRoot from './roots/AdminsListRoot';
 import NotFoundRoot from './roots/NotFoundRoot';
 import UsersListRoot, { loadData } from './roots/UsersListRoot';
 
