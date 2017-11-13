@@ -199,6 +199,10 @@ var _HomeRoot = __webpack_require__(13);
 
 var _HomeRoot2 = _interopRequireDefault(_HomeRoot);
 
+var _NotFoundRoot = __webpack_require__(24);
+
+var _NotFoundRoot2 = _interopRequireDefault(_NotFoundRoot);
+
 var _UsersListRoot = __webpack_require__(14);
 
 var _UsersListRoot2 = _interopRequireDefault(_UsersListRoot);
@@ -212,7 +216,7 @@ exports.default = [_extends({}, _App2.default, {
     exact: true
   }), _extends({}, _UsersListRoot2.default, {
     path: '/users'
-  })]
+  }), _extends({}, _NotFoundRoot2.default)]
 })];
 
 /***/ }),
@@ -277,9 +281,17 @@ app.get('*', function (req, res) {
   });
 
   Promise.all(promises).then(function () {
+    var context = {};
+
     // Pass request into renderer, which passes request to StaticRouter that uses the request to decide the components used to render on the screen
     // Sends the response after all promises are resolved
-    res.send((0, _renderer2.default)(req, store));
+    var content = (0, _renderer2.default)(req, store, context);
+
+    if (context.notFound) {
+      res.status(404);
+    }
+
+    res.send(content);
   });
 });
 
@@ -452,18 +464,16 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var Home = function Home() {
   return _react2.default.createElement(
     'div',
-    null,
+    { className: 'center-align', style: { marginTop: '200px' } },
     _react2.default.createElement(
-      'h1',
+      'h3',
       null,
-      'Home'
+      'Welcome'
     ),
     _react2.default.createElement(
-      'button',
-      { onClick: function onClick() {
-          return console.log('Hi there!');
-        } },
-      'Press Me!'
+      'p',
+      null,
+      'Check out these awesome features'
     )
   );
 };
@@ -593,13 +603,13 @@ var _Routes2 = _interopRequireDefault(_Routes);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // Store var will possess initial state (i.e. all load data functions already called)
-exports.default = function (req, store) {
+exports.default = function (req, store, context) {
   var content = (0, _server.renderToString)(_react2.default.createElement(
     _reactRedux.Provider,
     { store: store },
     _react2.default.createElement(
       _reactRouterDom.StaticRouter,
-      { location: req.path, context: {} },
+      { location: req.path, context: context },
       _react2.default.createElement(
         'div',
         null,
@@ -753,6 +763,41 @@ exports.default = function () {
 };
 
 var _actions = __webpack_require__(4);
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// StaticRouter renames context to staticContext
+// Pass default since staticContext is provided by StaticRouter, which won't exist on client-side since browser renders with BrowserRouter
+var NotFoundRoot = function NotFoundRoot(_ref) {
+  var _ref$staticContext = _ref.staticContext,
+      staticContext = _ref$staticContext === undefined ? {} : _ref$staticContext;
+
+  staticContext.notFound = true;
+  return _react2.default.createElement(
+    'h1',
+    null,
+    'Ooops, route not found.'
+  );
+};
+
+exports.default = {
+  component: NotFoundRoot
+};
 
 /***/ })
 /******/ ]);

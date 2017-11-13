@@ -27,9 +27,17 @@ app.get('*', (req, res) => {
   });
 
   Promise.all(promises).then(() => {
+    const context = {}
+
     // Pass request into renderer, which passes request to StaticRouter that uses the request to decide the components used to render on the screen
     // Sends the response after all promises are resolved
-    res.send(renderer(req, store));
+    const content = renderer(req, store, context)
+
+    if (context.notFound) {
+      res.status(404)
+    }
+
+    res.send(content);
 
   })
 });
